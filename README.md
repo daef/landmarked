@@ -34,10 +34,7 @@ __remove all__ landmarks: try the [C] button
 
 __save__ landmarks in .pts format: finally, hit the [S] button
 
-#### files
-
-currently landmarked is able to read .stl and .pts files
-simply drop them onto the canvas
+__load__ files: simply drop them on the canvas. landmarked understands .stl and .pts files
 
 #### known bugs
 
