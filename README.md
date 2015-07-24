@@ -18,21 +18,21 @@ try it out [here](http://mnml.is/landmarked) ( + [testdata](http://mnml.is/landm
 
 #### usage
 
-rotate: move your mouse while holding the right mouse button
-since the camera rotates around the point you've clicked
-one can navigate through a mesh with right-clicks - try it out
+__rotate__: move your mouse while holding the right mouse button.
 
-zoom: mouse wheel
+__pan__: since the camera rotates around the point you've clicked you can navigate through the mesh with right-clicks - try it out - it's fun
 
-set # of landmarks: use the + and - buttons
+__zoom__: mouse wheel
 
-set landmark: click somewhere on the mesh
+__set #__ of landmarks: use the + and - buttons
 
-remove landmark: click a landmark
+__add__ landmark: click on the mesh and it appears
 
-remove all landmarks: click the [C] button
+__remove__ landmark: simply click the landmark you want to remove
 
-save landmarks in .pts format: click the [S] button
+__remove all__ landmarks: try the [C] button
+
+__save__ landmarks in .pts format: finally, hit the [S] button
 
 #### files
 
