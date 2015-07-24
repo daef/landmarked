@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>%UNITY_WEB_NAME%</title>
+    <link rel="stylesheet" href="TemplateData/style.css">
+    <link rel="shortcut icon" href="TemplateData/favicon.ico" />
+    <script src="TemplateData/UnityProgress.js"></script>
+	<script src="TemplateData/FileSaver.js"></script>
+  </head>
+  <body class="template">
+    <div class="template-wrap clear">
+	    <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" height="%UNITY_HEIGHT%px" width="%UNITY_WIDTH%px"></canvas>
+        <!--div class="fullscreen"><img src="TemplateData/fullscreen.png" width="38" height="38" alt="Fullscreen" title="Fullscreen" onclick="SetFullscreen(1);" /></div-->
+    </div>
+    %UNITY_WEBGL_LOADER_GLUE%
+	<script>
+		// poor mans domready... http://dustindiaz.com/smallest-domready-ever
+		function r(f){/in/.test(document.readyState)?setTimeout('r('+f+')',9):f()}
+
+		function setSize() {
+			var canvas = document.getElementById("canvas");
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+		}
+		
+		r(function(){
+			window.addEventListener('resize', function(event){setSize();});
+		
+			var canvas = document.getElementById("canvas");
+			// enable drag'n'drop
+			canvas.addEventListener("dragover", function (evt) { evt.preventDefault(); }, false);
+			canvas.addEventListener("drop", function (evt) {
+				setSize();
+				var files = evt.dataTransfer.files;
+				for(i=0;i<files.length;i++) {
+					var f = files[i];
+					var reader = new FileReader();
+					reader.onload = (function(file) {
+						return function(e) {
+							// .jslib is responsible for cleaning up this global mess
+							(window.filedata = window.filedata ? window.filedata : {})[file.name] = e.target.result;
+							SendMessage('FileHelper', 'FileOpen', file.name);
+						}
+					})(f);
+					reader.readAsArrayBuffer(f);
+				}
+				evt.preventDefault();
+			}, false);
+		});
+	</script>
+  </body>
+</html>
