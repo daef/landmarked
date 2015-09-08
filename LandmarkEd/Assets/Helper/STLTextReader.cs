@@ -4,11 +4,7 @@ using System.Globalization;
 using System.IO;
 using UnityEngine;
 
-namespace CADS {
-   /*
-    * Used documentation: http://en.wikipedia.org/wiki/STL_%28file_format%29
-    */
-
+namespace Helper {
    internal sealed class StlTextReader {
       private const string KeyVertex = "vertex";
       private const string KeyNormal = "normal";
@@ -21,13 +17,7 @@ namespace CADS {
 
       private StreamReader _stlBytes;
 
-      public Geometry Read(byte[] bytes) {
-         if (bytes == null)
-            throw new ArgumentNullException("bytes");
-
-         if (StlBinaryReader.IsBinaryFormat(bytes))
-            throw new ArgumentException("bytes look binary, text reader panic");
-
+      public MeshData Read(byte[] bytes) {
          try {
             OpenStlBytes(bytes);
             FetchStlBytes();
@@ -36,7 +26,7 @@ namespace CADS {
             CloseStlBytes();
          }
 
-         return new Geometry {Indices = _indices.ToArray(), Vertices = _vertices.ToArray()};
+         return new MeshData {Indices = _indices.ToArray(), Vertices = _vertices.ToArray()};
       }
 
       private void OpenStlBytes(byte[] bytes) {
@@ -71,7 +61,6 @@ namespace CADS {
             var lineTokens = TokenizeLine(_stlBytes.ReadLine());
             if (lineTokens.Length == 0)
                continue;
-
             FetchLine(lineTokens);
          }
       }
@@ -92,11 +81,8 @@ namespace CADS {
       }
 
       private void FetchNormal(IList<string> lineTokens) {
-         const int polygonVerticesCount = 3;
-
-         for (var i = 0; i < polygonVerticesCount; ++i) {
+         for (var i = 0; i < 3; ++i)
             ParseVector3(lineTokens, IndexOfNormal);
-         }
       }
 
       private void FetchVertex(IList<string> lineTokens) {

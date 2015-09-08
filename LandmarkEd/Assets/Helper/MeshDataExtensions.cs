@@ -4,21 +4,21 @@ using System.Linq;
 using Assets;
 using UnityEngine;
 
-namespace CADS {
-   public sealed partial class Geometry {
+namespace Helper {
+   public sealed partial class MeshData {
       private const int MaxVertexCount = 65535;
 
-      public List<Geometry> Split(int maxVertexCount = MaxVertexCount) {
+      public List<MeshData> Split(int maxVertexCount = MaxVertexCount) {
          if (maxVertexCount == 0)
             throw new ArgumentOutOfRangeException("maxVertexCount");
 
          if (Indices.Length < maxVertexCount)
-            return new List<Geometry> { this };
+            return new List<MeshData> { this };
 
-         var geometries = new List<Geometry>();
+         var geometries = new List<MeshData>();
 
          for (var i = 0; i < Indices.Length; i += maxVertexCount) {
-            var builder = new SubGeometryBuilder();
+            var builder = new SubMeshDataBuilder();
 
             for (var j = 0; j < maxVertexCount && (i + j) < Indices.Length; j++) {
                var vIndex = Indices[i + j];
@@ -41,20 +41,20 @@ namespace CADS {
          return ToMeshes(Split());
       }
 
-      private static List<Mesh> ToMeshes(ICollection<Geometry> geometries) {
-         return geometries.Select(geometry => ToMesh(geometry)).ToList();
+      private static List<Mesh> ToMeshes(ICollection<MeshData> geometries) {
+         return geometries.Select(meshData => ToMesh(meshData)).ToList();
       }
 
-      private static Mesh ToMesh(Geometry geometry) {
-         var normals = geometry.Normals.Length > 0
-            ? geometry.Normals
-            : Calculator.CalculateNormals(geometry.Indices, geometry.Vertices);
+      private static Mesh ToMesh(MeshData meshData) {
+         var normals = meshData.Normals.Length > 0
+            ? meshData.Normals
+            : Calculator.CalculateNormals(meshData.Indices, meshData.Vertices);
  
          var mesh = new Mesh {
-            vertices = geometry.Vertices,
-            triangles = geometry.Indices,
+            vertices = meshData.Vertices,
+            triangles = meshData.Indices,
             normals = normals,
-            uv = geometry.UVs.Length > 0 ? geometry.UVs : Calculator.CalculateUVs(geometry.Vertices, normals, 10f)
+            uv = meshData.UVs.Length > 0 ? meshData.UVs : Calculator.CalculateUVs(meshData.Vertices, normals, 10f)
          };
 
          mesh.RecalculateBounds();

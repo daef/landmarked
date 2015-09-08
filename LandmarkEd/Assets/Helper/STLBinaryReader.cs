@@ -2,11 +2,7 @@
 using System.IO;
 using UnityEngine;
 
-namespace CADS {
-   /*
-     * Used documentation: http://en.wikipedia.org/wiki/STL_%28file_format%29
-     */
-
+namespace Helper {
    internal sealed class StlBinaryReader {
       private const int HeaderSize = 80;
       private const int TriangleSize = sizeof (float)*9 + 3*sizeof (float) + sizeof (ushort);
@@ -17,13 +13,7 @@ namespace CADS {
 
       private BinaryReader _stlBytes;
 
-      public Geometry Read(byte[] bytes) {
-         if (bytes == null)
-            throw new ArgumentNullException("bytes");
-
-         if (!IsBinaryFormat(bytes))
-            throw new ArgumentException("bytes look like text, binary reader panic");
-
+      public MeshData Read(byte[] bytes) {
          try {
             OpenStlBytes(bytes);
             FetchStlBytes();
@@ -32,7 +22,7 @@ namespace CADS {
             CloseStlBytes();
          }
 
-         return new Geometry {Indices = _indices, Vertices = _vertices};
+         return new MeshData {Indices = _indices, Vertices = _vertices};
       }
 
       private void CloseStlBytes() {
@@ -79,9 +69,6 @@ namespace CADS {
       }
 
       public static bool IsBinaryFormat(byte[] bytes) {
-         if (bytes == null)
-            throw new ArgumentNullException("bytes");
-
          var expectedFileSize = HeaderSize + sizeof (int) + ReadTriangleCount(bytes)*TriangleSize;
          return expectedFileSize == bytes.Length;
       }

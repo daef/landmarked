@@ -5,7 +5,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using Assets;
-using CADS;
+using Helper;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -91,9 +91,9 @@ public class FileHelper : MonoBehaviour {
       GC.WaitForPendingFinalizers();
 
       var gs = new List<GameObject>();
-      var stlGeometry = StlReader.Read(data);
-      stlGeometry.MergeVertices();
-      var meshes = stlGeometry.ToMeshes();
+      var stlMeshData = StlReader.Read(data);
+      stlMeshData.MergeVertices();
+      var meshes = stlMeshData.ToMeshes();
 
       Bounds b = new Bounds();
 

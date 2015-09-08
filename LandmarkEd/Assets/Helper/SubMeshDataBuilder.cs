@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace CADS {
-   internal sealed class SubGeometryBuilder {
+namespace Helper {
+   internal sealed class SubMeshDataBuilder {
       private readonly List<Vector3> _vertices = new List<Vector3>();
       private readonly List<Vector3> _normals = new List<Vector3>();
       private readonly List<Vector2> _uvs = new List<Vector2>();
@@ -10,8 +10,8 @@ namespace CADS {
       private readonly Dictionary<int, Vector3> _sourceIndexMap = new Dictionary<int, Vector3>();
       private readonly Dictionary<int, int> _internalIndexMap = new Dictionary<int, int>();
 
-      public Geometry Build() {
-         return new Geometry {
+      public MeshData Build() {
+         return new MeshData {
             Indices = _indices.ToArray(),
             Vertices = _vertices.ToArray(),
             Normals = _normals.ToArray(),

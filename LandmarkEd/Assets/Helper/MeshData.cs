@@ -1,8 +1,8 @@
 ﻿using System;
 using UnityEngine;
 
-namespace CADS {
-   public sealed partial class Geometry : ICloneable {
+namespace Helper {
+   public sealed partial class MeshData {
       public Vector3[] Vertices {
          get { return _vertices; }
          set {
@@ -54,21 +54,6 @@ namespace CADS {
 
       public bool IsEmpty() {
          return _indices.Length == 0 && _vertices.Length == 0;
-      }
-
-      public override string ToString() {
-         return "Geometry (Vertices = " + _vertices.Length + ", Indices: " + _indices.Length + ")";
-      }
-
-      public object Clone() {
-         return IsEmpty()
-            ? new Geometry()
-            : new Geometry {
-               Indices = _indices,
-               Vertices = _vertices,
-               Normals = _normals,
-               UVs = _uvs
-            };
       }
    }
 }

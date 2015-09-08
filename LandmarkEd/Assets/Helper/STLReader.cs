@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace CADS {
+namespace Helper {
    public static class StlReader {
-      public static Geometry Read(byte[] bytes) {
+      public static MeshData Read(byte[] bytes) {
          if (bytes == null)
             throw new ArgumentNullException("bytes");
 
